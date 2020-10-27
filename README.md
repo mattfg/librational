@@ -12,7 +12,7 @@ if you download just this library on its own it's probably gonna complain about 
 
 that issue aside, here's what's in this code.
 
-BigRational is the main point of entry. This is the one you're supposed to use. I recommend aliasing it to Rat or BigRat, A because it's fun and B to save on typing. The only reason everyone uses `int` everywhere is it's so easy to type.
+BigRational is the main point of entry. This is the one you're supposed to use. I recommend aliasing it to Rat or BigRat (https://stackoverflow.com/questions/9257989/defining-type-aliases), A because it's fun and B to save on typing. The only reason everyone uses `int` everywhere is it's so easy to type.
 BigRat has a numerator and a denominator, which are both BigIntegers. It should be reasonably self-explanatory, at least the important parts.
 
 UnsafeBigRational is there for when you're doing a lot of operations in sequence and you don't care about mutability or reduced fractions. I.e., you should not use these across threads and you probably shouldn't pass them to other methods.
