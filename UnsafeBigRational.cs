@@ -8,8 +8,11 @@ namespace librational
     // rational without creating a lot of temporaries and performing gcd calculations
     public partial struct UnsafeBigRational: IRational
     {
-        public BigInteger Numerator { get; set; }
-        public BigInteger Denominator { get; set; }
+        private BigInteger _numerator, _denominator;
+        private BigRational? _lastNormalizedValue;
+
+        public BigInteger Numerator { get => _numerator; set { Numerator = value; _lastNormalizedValue = null; } }
+        public BigInteger Denominator { get => _denominator; set { _denominator = value; _lastNormalizedValue = null; } }
 
         public override bool Equals(object obj) => base.Equals(obj);
         public bool Equals(BigRational b) => Normalize().Equals(b);
@@ -23,12 +26,15 @@ namespace librational
 
         public UnsafeBigRational(BigInteger num, BigInteger denom)
         {
-            this.Numerator = num;
-            this.Denominator = denom;
+            this._numerator = num;
+            this._denominator = denom;
+            this._lastNormalizedValue = null;
         }
 
         public BigRational Normalize()
         {
+            if (_lastNormalizedValue.HasValue) return _lastNormalizedValue.Value;
+
             var result = new BigRational(Numerator, Denominator);
             this.Numerator = result.Numerator;
             this.Denominator = result.Denominator;
