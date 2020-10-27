@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "nlLk1bgEU3ukPnh/aRM1EKgm1Lfg56k9raLxfVuMrRT7xNnQ/vntT3W5ziiKw+5mMf717ouvvuZ5A6Xq6MgAFQ==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Matt\\Desktop\\sandbox\\sandbox\\librational\\librational.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Matt\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}

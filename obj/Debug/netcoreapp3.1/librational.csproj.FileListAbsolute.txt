@@ -1,0 +1,16 @@
+C:\Users\Matt\Desktop\sandbox\sandbox\librational\bin\Debug\netcoreapp3.1\librational.exe
+C:\Users\Matt\Desktop\sandbox\sandbox\librational\bin\Debug\netcoreapp3.1\librational.deps.json
+C:\Users\Matt\Desktop\sandbox\sandbox\librational\bin\Debug\netcoreapp3.1\librational.runtimeconfig.json
+C:\Users\Matt\Desktop\sandbox\sandbox\librational\bin\Debug\netcoreapp3.1\librational.runtimeconfig.dev.json
+C:\Users\Matt\Desktop\sandbox\sandbox\librational\bin\Debug\netcoreapp3.1\librational.dll
+C:\Users\Matt\Desktop\sandbox\sandbox\librational\bin\Debug\netcoreapp3.1\librational.pdb
+C:\Users\Matt\Desktop\sandbox\sandbox\librational\obj\Debug\netcoreapp3.1\librational.csprojAssemblyReference.cache
+C:\Users\Matt\Desktop\sandbox\sandbox\librational\obj\Debug\netcoreapp3.1\librational.AssemblyInfoInputs.cache
+C:\Users\Matt\Desktop\sandbox\sandbox\librational\obj\Debug\netcoreapp3.1\librational.AssemblyInfo.cs
+C:\Users\Matt\Desktop\sandbox\sandbox\librational\obj\Debug\netcoreapp3.1\librational.dll
+C:\Users\Matt\Desktop\sandbox\sandbox\librational\obj\Debug\netcoreapp3.1\librational.pdb
+C:\Users\Matt\Desktop\sandbox\sandbox\librational\bin\Debug\netcoreapp3.1\libexcept.exe
+C:\Users\Matt\Desktop\sandbox\sandbox\librational\bin\Debug\netcoreapp3.1\libexcept.dll
+C:\Users\Matt\Desktop\sandbox\sandbox\librational\bin\Debug\netcoreapp3.1\libexcept.pdb
+C:\Users\Matt\Desktop\sandbox\sandbox\librational\obj\Debug\netcoreapp3.1\librational.csproj.CopyComplete
+C:\Users\Matt\Desktop\sandbox\sandbox\librational\obj\Debug\netcoreapp3.1\librational.csproj.CoreCompileInputs.cache
