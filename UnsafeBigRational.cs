@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 
 namespace librational
@@ -6,39 +7,40 @@ namespace librational
     // this class is a mutable rational that is not necessarily normalized.
     // it exists to allow you to perform intermediate operations on a
     // rational without creating a lot of temporaries and performing gcd calculations
-    public partial struct UnsafeBigRational: IRational
+    internal partial class UnsafeBigRational: Rational
     {
-        private BigInteger _numerator, _denominator;
-        private BigRational? _lastNormalizedValue;
+        private NormalizedRational _lastNormalizedValue;
 
-        public BigInteger Numerator { get => _numerator; set { Numerator = value; _lastNormalizedValue = null; } }
-        public BigInteger Denominator { get => _denominator; set { _denominator = value; _lastNormalizedValue = null; } }
+        new public BigInteger Numerator {
+            get => base.Numerator;
+            set { _numerator = value; _lastNormalizedValue = null; }
+        }
+        new public BigInteger Denominator {
+            get => base.Denominator;
+            set { _denominator = value; _lastNormalizedValue = null; }
+        }
 
-        public override bool Equals(object obj) => base.Equals(obj);
-        public bool Equals(BigRational b) => Normalize().Equals(b);
-        public override int GetHashCode() => HashCode.Combine(Numerator, Denominator);
-        public override string ToString() => $"{Numerator}/{Denominator}";
+        new public static UnsafeBigRational FromPair(BigInteger num, BigInteger denom) => new UnsafeBigRational(num, denom);
 
-        public UnsafeBigRational(long num = 0, long denom = 1):
+        private UnsafeBigRational(long num = 0, long denom = 1):
             this(new BigInteger(num), new BigInteger(denom))
         {
         }
 
-        public UnsafeBigRational(BigInteger num, BigInteger denom)
+        private UnsafeBigRational(BigInteger num, BigInteger denom): base(num, denom)
         {
-            this._numerator = num;
-            this._denominator = denom;
-            this._lastNormalizedValue = null;
+            _lastNormalizedValue = null;
         }
 
-        public BigRational Normalize()
+        internal NormalizedRational Normalize()
         {
-            if (_lastNormalizedValue.HasValue) return _lastNormalizedValue.Value;
-
-            var result = new BigRational(Numerator, Denominator);
-            this.Numerator = result.Numerator;
-            this.Denominator = result.Denominator;
-            return result;
+            if (_lastNormalizedValue != null) return _lastNormalizedValue;
+            else {
+                var result = NormalizedRational.FromPair(Numerator, Denominator);
+                this._numerator = result.Numerator;
+                this._denominator = result.Denominator;
+                return result;
+            }
         }
     }
 }

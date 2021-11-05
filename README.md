@@ -21,7 +21,7 @@ When you're done with your computations, call .Normalize to convert it into a Bi
 "Why not cache the BigRational result and return that instead of newing up a new one?" Hm, that's not a bad idea. I don't have a good answer. Cause I'm lazy?
 Update: I did it
 
-IComparable2 is a utility. It probably could have gone in its own libcomparable or something, but maybe I'll do that later. It just define sthe comparison operators for you as long as you implement IComparable.
+IComparable2 is a utility. It probably could have gone in its own libcomparable or something, but maybe I'll do that later. It just defines the comparison operators for you as long as you implement IComparable.
 
 IEnumerableExtensions adds 2 extension methods to IEnumerable, allowing you to sum BigRationals
 
@@ -32,4 +32,13 @@ Oh, we've also got Ln here, the natural log. To get another log in base B, just 
 
 RationalOperators implements the basic operators. I think I put these in their own file because they're pretty much the same for both BigRat and UnsafeBigRat, so if you update one you want to update them both, so it's convenient to have them in the same file.
 Also, it reduces scrolling.
-Nothing much to see here, these are defined algebraically: ms's BigInteger is doing the heavy lifting, which means a smarter programmer than me can probably find a brilliant way to optimize these (John Carmack HMU).
+Nothing much to see here, these are defined algebraically: ms's BigInteger is doing the heavy lifting, which means a smarter programmer than me can probably find a brilliant way to optimize these (John Carmack DM me).
+
+
+
+
+Update 2.0 Oct 2021:
+    refactored everything. took so long I can't even properly explain why.
+    added new features, like ContinuedFractions (thanks https://github.com/tompazourek/Rationals/) and improvements to conversion algorithms (thanks https://github.com/microsoftarchive/bcl/)
+    IRational is now Rational and Rational is now the entry point for the library. Please don't extend it, or whatever you extend it with probably won't work.
+    Also adding support for operations like exponentiation, logarithms, and square roots. At this point, it's not really "rationals" anymore

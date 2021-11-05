@@ -6,17 +6,20 @@ namespace librational
 {
     public static class IEnumerableExtensions
     {
-        public static BigRational Sum(this IEnumerable<BigRational> rat)
+        /** aggregate more performantly by using an UnsafeBigRational as the intermediate value */
+        public static Rational Aggregate<T, TAccumulate, TResult>(this IEnumerable<T> rat,
+            TAccumulate seed,
+            Func<TAccumulate, T, TAccumulate> func,
+            Func<TAccumulate, TResult> resultSelector)
+            where T: Rational
+            where TAccumulate : Rational
+            where TResult: Rational
         {
-            UnsafeBigRational temp = new UnsafeBigRational();
-            void Add(BigRational other)
-            {
-                temp.Numerator = (temp.Numerator * other.Denominator) + (other.Numerator * temp.Denominator);
-                temp.Denominator *= other.Denominator;
-            }
-            foreach (var v in rat) Add(v);
-            return temp.Normalize();
+            UnsafeBigRational temp = UnsafeBigRational.FromPair(seed.Numerator, seed.Denominator);
+            return rat.Aggregate<T, UnsafeBigRational, TResult>(
+                temp,
+                (tIn, tCarry) => func(UnsafeBigRational.FromPair(tIn.Numerator, tIn.Denominator), tCarry),
+                tResult => resultSelector(tResult.Normalize()));
         }
-        public static BigRational Sum<T>(this IEnumerable<T> rat, Func<T, BigRational> selector) => rat.Select(selector).Sum();
     }
 }

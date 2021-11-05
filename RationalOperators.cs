@@ -3,54 +3,34 @@ using System.Numerics;
 
 namespace librational
 {
-    public partial struct BigRational: IComparable2<BigRational>, IComparable2<BigInteger>
+    public abstract partial class Rational : IComparable2<Rational>, IComparable2<BigInteger>
     {
-        public static BigRational operator -(BigRational a) => new BigRational(-a.Numerator, a.Denominator);
-        public static BigRational operator +(BigRational a, BigRational b) => new BigRational((b.Denominator * a.Numerator) + (a.Denominator * b.Numerator), (b.Denominator * a.Denominator));
-        public static BigRational operator -(BigRational a, BigRational b) => new BigRational((b.Denominator * a.Numerator) - (a.Denominator * b.Numerator), (b.Denominator * a.Denominator));
-        public static BigRational operator *(BigRational a, BigRational b) => new BigRational(a.Numerator * b.Numerator, a.Denominator * b.Denominator);
-        public static BigRational operator /(BigRational a, BigRational b) => new BigRational(a.Numerator * b.Denominator, a.Denominator * b.Numerator);
-        public static bool operator ==(BigRational a, BigRational b) => a.CompareTo(b) == 0;
-        public static bool operator !=(BigRational a, BigRational b) => a.CompareTo(b) != 0;
+        public static Rational operator -(Rational a) => FromPair(-a._numerator, a._denominator);
+        public static Rational operator +(Rational a, Rational b) => FromPair((b._denominator * a._numerator) + (a._denominator * b._numerator), (b._denominator * a._denominator));
+        public static Rational operator -(Rational a, Rational b) => FromPair((b._denominator * a._numerator) - (a._denominator * b._numerator), (b._denominator * a._denominator));
+        public static Rational operator *(Rational a, Rational b) => FromPair(a._numerator * b._numerator, a._denominator * b._denominator);
+        public static Rational operator /(Rational a, Rational b) => FromPair(a._numerator * b._denominator, a._denominator * b._numerator);
+        public static bool operator ==(Rational a, Rational b) => a.CompareTo(b) == 0;
+        public static bool operator !=(Rational a, Rational b) => a.CompareTo(b) != 0;
 
-        public static implicit operator BigRational(int i) => new BigRational(i);
-        public static implicit operator BigRational(long i) => new BigRational(i);
+        public static implicit operator Rational(int i) => FromPair(i);
+        public static implicit operator Rational(long i) => FromPair(i);
+        public static implicit operator Rational(double i) => FromDouble(i);
+        public static implicit operator Rational(decimal i) => FromDecimal(i);
 
-        public int CompareTo(BigRational b)
+        public int CompareTo(Rational b)
         {
-            // this is inefficient but I'm not great at math so instead of figuring out how to normalize these
-            // denominators efficiently, I'm letting the constructor do the work
-            var left = new BigRational(Numerator * b.Denominator, Denominator * b.Denominator).Numerator;
-            var right = new BigRational(b.Numerator * Denominator, Denominator * b.Denominator).Numerator;
-            return left.CompareTo(right);
+            if (IsNegativeInfinity) return 1; // I am negative infinity. Everything is more than me
+            else if (IsNotANumber) return 1; // I am nan. Everything is both more and less than me. Arbitrarily, this method says "more".
+            else if (IsPositiveInfinity) return -1; // I am positive infinity. Everything is less than me
+            else {
+                // a/b * d/d = ad/bd
+                // c/d * b/b = cb/bd
+                // (a/b < c/d) = (ad/bd < cb/bd) = (ad < cb)
+                return (_numerator * b._denominator).CompareTo(b._numerator * _denominator);
+            }
         }
 
-        /* Numerator / Denominator gives the quotient
-         * the quotient times the denominator gives back not the original value (the remainder is lost)
-         * but the truncated value. For some reason this partial class can see the Numerator and Denominator
-         * from here but not the Truncate property; I guess because Numerator and Denominator are
-         * overridden in BigRational but Truncate is on IRational (and sealed).
-         */
-        public int CompareTo(BigInteger b) => (Numerator / Denominator * Denominator).CompareTo(b);
-    }
-
-    public partial struct UnsafeBigRational: IComparable2<UnsafeBigRational>
-    {
-        public static UnsafeBigRational operator -(UnsafeBigRational a) => new UnsafeBigRational(-a.Numerator, a.Denominator);
-        public static UnsafeBigRational operator +(UnsafeBigRational a, UnsafeBigRational b) => new UnsafeBigRational((b.Denominator * a.Numerator) + (a.Denominator * b.Numerator), (b.Denominator * a.Denominator));
-        public static UnsafeBigRational operator -(UnsafeBigRational a, UnsafeBigRational b) => new UnsafeBigRational((b.Denominator * a.Numerator) - (a.Denominator * b.Numerator), (b.Denominator * a.Denominator));
-        public static UnsafeBigRational operator *(UnsafeBigRational a, UnsafeBigRational b) => new UnsafeBigRational(a.Numerator * b.Numerator, a.Denominator * b.Denominator);
-        public static UnsafeBigRational operator /(UnsafeBigRational a, UnsafeBigRational b) => new UnsafeBigRational(a.Numerator * b.Denominator, a.Denominator * b.Numerator);
-        public static bool operator ==(UnsafeBigRational a, UnsafeBigRational b) => a.CompareTo(b) == 0;
-        public static bool operator !=(UnsafeBigRational a, UnsafeBigRational b) => a.CompareTo(b) != 0;
-
-        public int CompareTo(UnsafeBigRational b)
-        {
-            // this is inefficient but I'm not great at math so instead of figuring out how to normalize these
-            // denominators efficiently, I'm letting the constructor do the work
-            var left = new BigRational(Numerator * b.Denominator, Denominator * b.Denominator).Numerator;
-            var right = new BigRational(b.Numerator * Denominator, Denominator * b.Denominator).Numerator;
-            return left.CompareTo(right);
-        }
+        public int CompareTo(BigInteger b) => CompareTo(FromPair(b));
     }
 }
