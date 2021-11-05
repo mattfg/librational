@@ -32,7 +32,10 @@ namespace librational
 
         public static Rational FromDecimal(decimal value)
         {
-
+            // this is a dumb way to do it but it's easy
+            var strep = value.ToString();
+            var parts = strep.Split('.');
+            return FromPair(BigInteger.Parse(parts[0] + parts[1]), BigInteger.Pow(new BigInteger(10), parts[1].Length));
         }
 
         public static Rational FromDouble(double value)
